@@ -1,0 +1,333 @@
+# =============================================================================
+# Kali Linux Study Lab — Docker Compose Environment
+# =============================================================================
+# Covers: Web App Testing, Network/Exploitation, Password Attacks,
+#         Forensics, Reporting
+#
+# Usage:
+#   Start all labs:        ./lab.sh start
+#   Start one category:    ./lab.sh start web
+#   Stop all:              ./lab.sh stop
+#   Reset a container:     ./lab.sh reset dvwa
+#   Status:                ./lab.sh status
+# =============================================================================
+
+networks:
+  lab-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/24
+
+# =============================================================================
+# WEB APPLICATION TESTING LABS
+# =============================================================================
+services:
+
+  # ---------------------------------------------------------------------------
+  # DVWA — Damn Vulnerable Web Application
+  # Tools: Burp Suite, SQLmap, Nikto, Dirb, ffuf, OWASP ZAP
+  # URL: http://localhost:8080  (admin / password)
+  # ---------------------------------------------------------------------------
+  dvwa:
+    image: ghcr.io/digininja/dvwa:latest
+    container_name: lab-dvwa
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - DB_SERVER=dvwa-db
+      - DB_PORT=3306
+      - DB_DATABASE=dvwa
+      - DB_USERNAME=dvwa
+      - DB_PASSWORD=p@ssw0rd
+      - RECAPTCHA_PRIV_KEY=""
+      - RECAPTCHA_PUB_KEY=""
+    depends_on:
+      - dvwa-db
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.10
+
+  dvwa-db:
+    image: mariadb:10.11
+    container_name: lab-dvwa-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=dvwa
+      - MYSQL_USER=dvwa
+      - MYSQL_PASSWORD=p@ssw0rd
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.11
+
+  # ---------------------------------------------------------------------------
+  # WebGoat — OWASP intentionally vulnerable Java app
+  # Tools: Burp Suite, OWASP ZAP, SQLmap
+  # URL: http://localhost:8081/WebGoat  (guest / guest)
+  # ---------------------------------------------------------------------------
+  webgoat:
+    image: webgoat/webgoat:latest
+    container_name: lab-webgoat
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+      - "9090:9090"
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.12
+
+  # ---------------------------------------------------------------------------
+  # Juice Shop — OWASP modern vulnerable Node.js app
+  # Tools: Burp Suite, ffuf, SQLmap, Gobuster
+  # URL: http://localhost:3000
+  # ---------------------------------------------------------------------------
+  juiceshop:
+    image: bkimminich/juice-shop:latest
+    container_name: lab-juiceshop
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.13
+
+  # ---------------------------------------------------------------------------
+  # Mutillidae II — OWASP Top 10 practice
+  # Tools: Burp Suite, SQLmap, Nikto, WPScan equivalent
+  # URL: http://localhost:8082  (admin / adminpass)
+  # ---------------------------------------------------------------------------
+  mutillidae:
+    image: webpwnized/mutillidae:latest
+    container_name: lab-mutillidae
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+      - "8443:443"
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.14
+
+  # ---------------------------------------------------------------------------
+  # WordPress — Vulnerable WP instance for WPScan practice
+  # Tools: WPScan, Hydra, Burp Suite
+  # URL: http://localhost:8083  (admin / adminpass)
+  # ---------------------------------------------------------------------------
+  wordpress:
+    image: wordpress:5.8-php7.4-apache
+    container_name: lab-wordpress
+    restart: unless-stopped
+    ports:
+      - "8083:80"
+    environment:
+      - WORDPRESS_DB_HOST=wordpress-db
+      - WORDPRESS_DB_USER=wpuser
+      - WORDPRESS_DB_PASSWORD=wppassword
+      - WORDPRESS_DB_NAME=wordpress
+    depends_on:
+      - wordpress-db
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.15
+
+  wordpress-db:
+    image: mariadb:10.11
+    container_name: lab-wordpress-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wpuser
+      - MYSQL_PASSWORD=wppassword
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.16
+
+# =============================================================================
+# NETWORK & EXPLOITATION LABS
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Metasploitable3 (Ubuntu) — Classic vulnerable Linux machine
+  # Tools: Nmap, Metasploit, Hydra, Nikto, SearchSploit
+  # SSH: ssh -p 2222 vagrant@localhost  (vagrant / vagrant)
+  # Web: http://localhost:8084
+  # ---------------------------------------------------------------------------
+  metasploitable3-ubuntu:
+    image: rapid7/metasploitable3-ub1404:latest
+    container_name: lab-metasploitable3
+    restart: unless-stopped
+    ports:
+      - "2222:22"    # SSH
+      - "8084:80"    # HTTP
+      - "8085:8080"  # Tomcat
+      - "2121:21"    # FTP
+      - "3306:3306"  # MySQL
+      - "5432:5432"  # PostgreSQL
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.20
+
+  # ---------------------------------------------------------------------------
+  # Vulnerable SSH — Brute-force & credential practice
+  # Tools: Hydra, Medusa, Nmap, John (post-login)
+  # SSH: ssh -p 2223 admin@localhost  (weak passwords for brute-force)
+  # ---------------------------------------------------------------------------
+  vulnerable-ssh:
+    image: linuxserver/openssh-server:latest
+    container_name: lab-ssh
+    restart: unless-stopped
+    ports:
+      - "2223:2222"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - USER_NAME=admin
+      - USER_PASSWORD=password123
+      - PASSWORD_ACCESS=true
+      - SUDO_ACCESS=true
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.21
+
+  # ---------------------------------------------------------------------------
+  # FTP Server — Vulnerable FTP for reconnaissance and exploitation
+  # Tools: Nmap, Hydra, Metasploit (vsftpd modules)
+  # FTP: ftp localhost 2121 (anonymous access enabled)
+  # ---------------------------------------------------------------------------
+  vulnerable-ftp:
+    image: fauria/vsftpd:latest
+    container_name: lab-ftp
+    restart: unless-stopped
+    ports:
+      - "21:21"
+      - "20:20"
+      - "21100-21110:21100-21110"
+    environment:
+      - FTP_USER=ftpuser
+      - FTP_PASS=ftppass
+      - PASV_ADDRESS=127.0.0.1
+      - PASV_MIN_PORT=21100
+      - PASV_MAX_PORT=21110
+      - ANONYMOUS_ACCESS=YES
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.22
+
+  # ---------------------------------------------------------------------------
+  # Vulnerable API — REST API with common vulnerabilities (IDOR, auth bypass)
+  # Tools: Burp Suite, ffuf, curl, Postman
+  # URL: http://localhost:8086
+  # ---------------------------------------------------------------------------
+  vulnerable-api:
+    image: erev0s/vampi:latest
+    container_name: lab-vulnerable-api
+    restart: unless-stopped
+    ports:
+      - "8086:5000"
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.23
+
+# =============================================================================
+# PASSWORD ATTACK LABS
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Hash cracking challenge server — serves hashes to crack
+  # Tools: John, Hashcat, Hydra, Medusa
+  # URL: http://localhost:8087
+  # ---------------------------------------------------------------------------
+  hash-server:
+    image: nginx:alpine
+    container_name: lab-hashes
+    restart: unless-stopped
+    ports:
+      - "8087:80"
+    volumes:
+      - ./passwords/hashes:/usr/share/nginx/html:ro
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.30
+
+# =============================================================================
+# FORENSICS LABS
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # DFIR.training — Memory/disk image server for forensics challenges
+  # Tools: Autopsy, Volatility, Binwalk, Foremost, Sleuth Kit
+  # URL: http://localhost:8088
+  # ---------------------------------------------------------------------------
+  forensics-files:
+    image: nginx:alpine
+    container_name: lab-forensics
+    restart: unless-stopped
+    ports:
+      - "8088:80"
+    volumes:
+      - ./forensics/files:/usr/share/nginx/html:ro
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.40
+
+# =============================================================================
+# REPORTING & COLLABORATION
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Dradis — Collaborative reporting for pentesters
+  # Tools: Import from Nmap, Burp, OpenVAS, Metasploit
+  # URL: http://localhost:3001  (setup on first run)
+  # ---------------------------------------------------------------------------
+  dradis:
+    image: dradisframework/dradis-ce:latest
+    container_name: lab-dradis
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - dradis-data:/dradis/shared
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.50
+
+  # ---------------------------------------------------------------------------
+  # CherryTree note server (via simple file share)
+  # Serves shared .ctd files across sessions
+  # ---------------------------------------------------------------------------
+  notes:
+    image: nginx:alpine
+    container_name: lab-notes
+    restart: unless-stopped
+    ports:
+      - "8089:80"
+    volumes:
+      - ./reporting/notes:/usr/share/nginx/html
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.51
+
+# =============================================================================
+# NETWORK MONITORING (see all lab traffic)
+# =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # ntopng — Real-time network traffic analysis dashboard
+  # Tools: Wireshark comparison, tcpdump visualization
+  # URL: http://localhost:3002  (admin / admin)
+  # ---------------------------------------------------------------------------
+  ntopng:
+    image: ntop/ntopng:stable
+    container_name: lab-ntopng
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.60
+
+volumes:
+  dradis-data:
