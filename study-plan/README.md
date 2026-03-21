@@ -40,6 +40,25 @@ Before starting, ensure you have:
 - Professor Messer Network+ — free YouTube series
 - [freeCodeCamp: Kali Linux Course](https://youtu.be/ug8W0sFiVJo) — covers terminal basics
 
+**Girus warm-up labs (interactive, in-browser — no setup required):**
+
+| Girus Lab ID | What it covers | Week 0 skill |
+|-------------|----------------|-------------|
+| `linux-comandos-basicos` | `ls`, `cd`, `cp`, `mv`, pipes, redirection | Core CLI fluency |
+| `linux-permissoes-arquivos` | `chmod`, `chown`, SUID/SGID/sticky bit | File permissions |
+| `linux-gerenciamento-processos` | `ps`, `kill`, `top`, signals, background jobs | Process management |
+| `linux-monitoramento-sistema` | `ss`, `netstat`, `journalctl`, resource monitoring | Network and system monitoring |
+| `docker-fundamentos` | `docker run`, `ps`, `stop`, `rm`, image lifecycle | Docker basics for the lab |
+
+```bash
+# Launch Girus and start with Linux basics
+girus list clusters    # Confirm cluster is active
+girus lab start linux-comandos-basicos
+xdg-open http://localhost:8000
+```
+
+See [`docker-lab/girus-warmups.md`](../docker-lab/girus-warmups.md) for the full guided exercise guide.
+
 ---
 
 ## Month 1–2: Information Gathering

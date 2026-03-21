@@ -7,6 +7,29 @@
 
 ---
 
+## Girus Integration
+
+Reinforce Linux and Docker fundamentals with **Girus** — a local, in-browser guided lab platform — before diving into the hacking tools.
+
+```bash
+# Verify Girus is running
+girus list clusters
+
+# Recommended warm-up labs (run before starting the Docker lab)
+girus lab start linux-comandos-basicos        # Week 0 prerequisites
+girus lab start linux-permissoes-arquivos      # File permissions (chmod, SUID)
+girus lab start linux-gerenciamento-processos  # ps, kill, signals
+girus lab start linux-monitoramento-sistema    # Monitoring, ss, netstat
+girus lab start docker-fundamentos             # Docker basics for the Docker lab
+girus lab start docker-gerenciamento-containers # Container management
+
+xdg-open http://localhost:8000
+```
+
+See [`docker-lab/girus-warmups.md`](./docker-lab/girus-warmups.md) for full step-by-step exercises.
+
+---
+
 ## What's Inside
 
 | Section | Description |
