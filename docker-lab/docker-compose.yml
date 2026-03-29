@@ -149,6 +149,38 @@ services:
 # =============================================================================
 
   # ---------------------------------------------------------------------------
+  # Metasploitable2 — Classic beginner vulnerable Linux machine
+  # Used by InfoSecLab university course (PT) for vuln testing labs
+  # Tools: Nmap, Metasploit, Hydra, OpenVAS, Nessus, dmitry, hping3
+  # SSH:  ssh -p 2220 msfadmin@localhost  (msfadmin / msfadmin)
+  # FTP:  ftp localhost 2121              (anonymous)
+  # Web:  http://localhost:8090           (DVWA, phpMyAdmin, tikiwiki)
+  # SMTP: localhost:2525
+  # MySQL: localhost:3307 (root / no password)
+  # Telnet: telnet localhost 2323
+  # ---------------------------------------------------------------------------
+  metasploitable2:
+    image: tleemcjr/metasploitable2:latest
+    container_name: lab-metasploitable2
+    restart: unless-stopped
+    ports:
+      - "2220:22"      # SSH
+      - "2323:23"      # Telnet
+      - "2525:25"      # SMTP (Postfix)
+      - "2121:21"      # FTP (vsftpd 2.3.4 — backdoor!)
+      - "8090:80"      # HTTP (DVWA, tikiwiki, phpMyAdmin)
+      - "3307:3306"    # MySQL (root / no password)
+      - "5433:5432"    # PostgreSQL
+      - "1099:1099"    # Java RMI
+      - "6667:6667"    # UnrealIRCd (backdoor!)
+      - "8180:8180"    # Tomcat (admin/admin)
+    networks:
+      lab-net:
+        ipv4_address: 10.10.0.25
+    tty: true
+    stdin_open: true
+
+  # ---------------------------------------------------------------------------
   # Metasploitable3 (Ubuntu) — Classic vulnerable Linux machine
   # Tools: Nmap, Metasploit, Hydra, Nikto, SearchSploit
   # SSH: ssh -p 2222 vagrant@localhost  (vagrant / vagrant)

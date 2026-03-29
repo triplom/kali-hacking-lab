@@ -1,6 +1,6 @@
-# Kali Linux Hacking Lab 🛡️
+# Kali Linux Hacking Lab
 
-> A complete, structured cybersecurity learning environment — tools reference, 12-month study plan, Docker lab, and curated free resources.
+> A complete, structured cybersecurity learning environment — tools reference, 13-month study plan, Docker lab, and curated free resources.
 
 **System:** Kali GNU/Linux Rolling 2026.1 · **Docker:** 27.5.1  
 **Author:** [@triplom](https://github.com/triplom) · **Updated:** March 2026
@@ -34,12 +34,12 @@ See [`docker-lab/girus-warmups.md`](./docker-lab/girus-warmups.md) for full step
 
 | Section | Description |
 |---------|-------------|
-| [📚 Study Plan](./study-plan/) | 12-month deep-dive curriculum, week-by-week |
-| [🔧 Tools Reference](./tools-reference/) | All 40+ Kali tools explained by category |
-| [🐳 Docker Lab](./docker-lab/) | Spin up 15 vulnerable containers in one command |
-| [📖 Resources](./resources/) | freeCodeCamp course, YouTube videos, practice platforms |
-| [📋 Cheatsheets](./cheatsheets/) | Quick-reference command cards per tool |
-| [📄 Docs](./docs/) | PDFs of all guides |
+| [Study Plan](./study-plan/) | 13-month deep-dive curriculum, week-by-week |
+| [Tools Reference](./tools-reference/) | 55+ tools explained by category |
+| [Docker Lab](./docker-lab/) | Spin up 16 vulnerable containers in one command |
+| [Resources](./resources/) | Courses, videos, practice platforms, lab guides |
+| [Cheatsheets](./cheatsheets/) | Quick-reference command cards per tool |
+| [Docs](./docs/) | PDFs of all guides |
 
 ---
 
@@ -57,26 +57,71 @@ cd kali-hacking-lab
 ```bash
 cd docker-lab
 ./lab.sh start web        # Web application labs
+./lab.sh start network    # Network/exploitation labs (includes Metasploitable 2)
 ./lab.sh status           # Check URLs and status
 ```
 
 ### 3. Pick your study month
 
 ```
-Month 1-2   →  Information Gathering (Nmap, Recon-ng, Amass...)
-Month 3     →  Vulnerability Analysis (Nikto, OpenVAS...)
-Month 4     →  Web App Testing (Burp Suite, SQLmap, WPScan...)
+Week 0      →  Prerequisites + Pentest Theory (Kill Chain, MITRE ATT&CK, PTES)
+Month 1-2   →  Information Gathering (Nmap, hping3, Recon-ng, Amass, Shodan, dmitry...)
+Month 3     →  Vulnerability Analysis (Nikto, OpenVAS, Nessus...)
+Month 4     →  Web App Testing (Burp Suite, SQLmap, WPScan, ZAP...)
 Month 5     →  Password Attacks (Hashcat, Hydra, John...)
 Month 6     →  Wireless Attacks (Aircrack-ng, Wifite...)
 Month 7     →  Exploitation (Metasploit, BeEF, SearchSploit...)
-Month 8     →  Sniffing & Spoofing (Wireshark, Responder...)
-Month 9     →  Digital Forensics (Autopsy, Volatility, Binwalk...)
-Month 10    →  Reverse Engineering (Ghidra, Radare2, GDB...)
-Month 11    →  Reporting (Dradis, CherryTree, Faraday...)
-Month 12    →  Capstone — Full Pentest Simulation
+Month 8     →  Python for Hacking (Scapy, sockets, web assessment, wireless...)
+Month 9     →  Sniffing & Spoofing (Wireshark, Responder...)
+Month 10    →  Anonymity, OPSEC & Evasion (Tor, ProxyChains, Macchanger...)
+Month 11    →  Digital Forensics (Autopsy, Volatility, Binwalk...)
+Month 12    →  Reverse Engineering & Reporting (Ghidra, Dradis...)
+Month 13    →  Capstone — Full Pentest + Bug Bounty
 ```
 
 → See the full [Study Plan](./study-plan/README.md)
+
+---
+
+## Learning Resources
+
+### Primary Courses
+
+| Resource | Language | Cost | Coverage |
+|----------|----------|------|----------|
+| [freeCodeCamp: Ethical Hacking with Kali Linux](https://www.freecodecamp.org/news/learn-cybersecurity-and-ethical-hacking-using-kali-linux/) | English | Free | Nmap, Aircrack-ng, Wireshark basics |
+| [Udemy: Hacker Ético Profissional com Kali Linux v2025](https://www.udemy.com/course/hacker-etico-profissional/) | PT-BR | Paid | 241 lectures, 37 sections — full curriculum |
+| [InfoSecLab Vulnerability Testing](https://pontocom.gitbook.io/infoseclab/vulntesting/intro) | PT-PT | Free | University lab guide — Metasploitable 2 |
+
+### freeCodeCamp Course Mapping
+
+| Course Section | Study Plan |
+|----------------|------------|
+| Basic Commands & Terminal | Prerequisites (Week 0) |
+| Nmap — Scan Ports | Month 1: Information Gathering |
+| Aircrack-ng, Monitor Mode | Month 6: Wireless Attacks |
+| WPA2 Handshake Capture | Month 6: Wireless Attacks |
+| De-auth Attacks | Month 6: Wireless Attacks |
+| Wordlists & Dictionary Attacks | Month 5: Password Attacks |
+| Wireshark Tutorial | Month 9: Sniffing & Spoofing |
+
+### Udemy Course Mapping (Hacker Ético Profissional)
+
+| Sections | Topic | Study Plan |
+|---------|-------|------------|
+| 1-3 | Lab Setup, Anonymity Intro, Kali | Week 0 |
+| 4-5 | Information Gathering, OSINT | Month 1-2 |
+| 6 | Metasploit | Month 7 |
+| 7 | Bypass AV / Evasion | Month 10 |
+| 8-9 | Vulnerability Analysis | Month 3 |
+| 10 | Scanning (hping3) | Month 1-2 |
+| 17 | Wireshark (attack analysis) | Month 9 |
+| 18 | Tor, ProxyChains, Macchanger, Nipe | Month 10 |
+| 19-27 | Python for Hacking (9 sections) | Month 8 |
+| 36 | Bug Bounty | Month 13 |
+| 37 | AI / ShellGPT integration | Month 13 |
+
+→ Full mapping: [Resources / InfoSecLab](./resources/infoseclab/README.md)
 
 ---
 
@@ -84,7 +129,7 @@ Month 12    →  Capstone — Full Pentest Simulation
 
 ```
 docker-lab/
-├── docker-compose.yml     # 15 vulnerable containers
+├── docker-compose.yml     # 16 vulnerable containers
 ├── lab.sh                 # Lab manager (start/stop/reset/status)
 ├── kali-attacker.sh       # Isolated Kali attacker container
 └── setup-wordlists.sh     # Wordlist setup helper
@@ -95,43 +140,40 @@ docker-lab/
 | Category | Containers |
 |----------|-----------|
 | Web App Testing | DVWA, WebGoat, Juice Shop, Mutillidae, WordPress |
-| Network / Exploitation | Metasploitable3, SSH server, FTP server, Vulnerable API |
+| Network / Exploitation | Metasploitable2, Metasploitable3, SSH server, FTP server, Vulnerable API |
 | Password Attacks | Hash challenge server |
 | Forensics | Forensic file server |
 | Reporting | Dradis, ntopng, notes server |
+
+### Container Quick Reference
+
+| Container | IP | Ports | Credentials | Tools |
+|-----------|-----|-------|-------------|-------|
+| DVWA | 10.10.0.10 | 8080 | admin/password | Burp, SQLmap, Nikto |
+| WebGoat | 10.10.0.12 | 8081 | guest/guest | Burp, ZAP |
+| Juice Shop | 10.10.0.13 | 3000 | auto-register | Burp, ffuf |
+| Mutillidae | 10.10.0.14 | 8082 | admin/adminpass | Burp, SQLmap |
+| WordPress | 10.10.0.15 | 8083 | admin/adminpass | WPScan, Hydra |
+| **Metasploitable2** | **10.10.0.25** | 2220/SSH, 2121/FTP, 8090/HTTP | msfadmin/msfadmin | Nmap, Metasploit, OpenVAS |
+| Metasploitable3 | 10.10.0.20 | 2222/SSH, 8084/HTTP | vagrant/vagrant | Metasploit, Nikto |
+| Vulnerable SSH | 10.10.0.21 | 2223 | admin/password123 | Hydra, Medusa |
+| Vulnerable API | 10.10.0.23 | 8086 | - | Burp, ffuf |
+| Dradis | 10.10.0.50 | 3001 | setup on first run | Reporting |
 
 → Full instructions: [Docker Lab Guide](./docker-lab/README.md)
 
 ---
 
-## freeCodeCamp Course Coverage
-
-The [freeCodeCamp Ethical Hacking with Kali Linux](https://www.freecodecamp.org/news/learn-cybersecurity-and-ethical-hacking-using-kali-linux/) course (4h, free on YouTube) covers:
-
-| Course Section | Mapped to Study Plan |
-|----------------|----------------------|
-| Basic Commands & Terminal | Prerequisites (Week 0) |
-| Nmap — Scan Ports | Month 1: Information Gathering |
-| Aircrack-ng, Monitor Mode | Month 6: Wireless Attacks |
-| WPA2 Handshake Capture | Month 6: Wireless Attacks |
-| De-auth Attacks | Month 6: Wireless Attacks |
-| Wordlists & Dictionary Attacks | Month 5: Password Attacks |
-| Wireshark Tutorial | Month 8: Sniffing & Spoofing |
-
-→ Full analysis: [Resources / freeCodeCamp](./resources/freecodecamp/README.md)
-
----
-
-## Tools Covered (40+)
+## Tools Covered (55+)
 
 <details>
-<summary><strong>Information Gathering</strong> — Nmap, Recon-ng, Maltego, theHarvester, Spiderfoot, Amass</summary>
+<summary><strong>Information Gathering</strong> — Nmap, hping3, Recon-ng, Maltego, theHarvester, Spiderfoot, Amass, dmitry, EyeWitness, Maigret, GooFuzz, Shodan, wafw00f, SNMP tools</summary>
 
 See [tools-reference/01-information-gathering.md](./tools-reference/01-information-gathering.md)
 </details>
 
 <details>
-<summary><strong>Vulnerability Analysis</strong> — Nikto, OpenVAS, Legion, Lynis</summary>
+<summary><strong>Vulnerability Analysis</strong> — Nikto, OpenVAS/GVM, Nessus, Legion, Lynis, Wapiti, WPScan, OpenSCAP</summary>
 
 See [tools-reference/02-vulnerability-analysis.md](./tools-reference/02-vulnerability-analysis.md)
 </details>
@@ -139,7 +181,7 @@ See [tools-reference/02-vulnerability-analysis.md](./tools-reference/02-vulnerab
 <details>
 <summary><strong>Web Application Testing</strong> — Burp Suite, OWASP ZAP, SQLmap, WPScan, Gobuster, ffuf, Wfuzz, Dirb</summary>
 
-See [tools-reference/03-web-application.md](./tools-reference/03-web-application.md)
+See [tools-reference/03-web-application-attacks.md](./tools-reference/03-web-application-attacks.md)
 </details>
 
 <details>
@@ -151,38 +193,72 @@ See [tools-reference/04-password-attacks.md](./tools-reference/04-password-attac
 <details>
 <summary><strong>Wireless Attacks</strong> — Aircrack-ng, Kismet, Wifite, Fern, Bully</summary>
 
-See [tools-reference/05-wireless.md](./tools-reference/05-wireless.md)
+See [tools-reference/06-wireless-attacks.md](./tools-reference/06-wireless-attacks.md)
 </details>
 
 <details>
 <summary><strong>Exploitation</strong> — Metasploit, BeEF, SearchSploit, RouterSploit, Commix</summary>
 
-See [tools-reference/06-exploitation.md](./tools-reference/06-exploitation.md)
+See [tools-reference/05-exploitation.md](./tools-reference/05-exploitation.md)
 </details>
 
 <details>
-<summary><strong>Sniffing & Spoofing</strong> — Wireshark, Ettercap, Responder, Bettercap, tcpdump</summary>
+<summary><strong>Python for Hacking</strong> — socket, Scapy, requests, paramiko; port scanner, sniffer, brute-forcer, web fuzzer, wireless tools (NEW)</summary>
+
+See [tools-reference/11-python-hacking.md](./tools-reference/11-python-hacking.md)
+</details>
+
+<details>
+<summary><strong>Sniffing & Spoofing</strong> — Wireshark, Ettercap, Responder, Bettercap, tcpdump, Yersinia</summary>
 
 See [tools-reference/07-sniffing-spoofing.md](./tools-reference/07-sniffing-spoofing.md)
 </details>
 
 <details>
+<summary><strong>Anonymity & OPSEC</strong> — Tor, ProxyChains, Macchanger, Nipe, VPN, Veil (NEW)</summary>
+
+See [tools-reference/12-anonymity-opsec.md](./tools-reference/12-anonymity-opsec.md)
+</details>
+
+<details>
 <summary><strong>Digital Forensics</strong> — Autopsy, Volatility, Binwalk, Foremost, Sleuth Kit</summary>
 
-See [tools-reference/08-forensics.md](./tools-reference/08-forensics.md)
+See [tools-reference/08-post-exploitation.md](./tools-reference/08-post-exploitation.md)
 </details>
 
 <details>
 <summary><strong>Reverse Engineering</strong> — Ghidra, Radare2, GDB, pwndbg, strace</summary>
 
-See [tools-reference/09-reverse-engineering.md](./tools-reference/09-reverse-engineering.md)
+See [tools-reference/09-forensics-reporting.md](./tools-reference/09-forensics-reporting.md)
 </details>
 
 <details>
 <summary><strong>Reporting</strong> — CherryTree, Dradis, Faraday, Pipal</summary>
 
-See [tools-reference/10-reporting.md](./tools-reference/10-reporting.md)
+See [tools-reference/10-social-engineering-misc.md](./tools-reference/10-social-engineering-misc.md)
 </details>
+
+<details>
+<summary><strong>Bug Bounty</strong> — Subfinder, Nuclei, ffuf, Amass, gau, waybackurls, httpx (NEW)</summary>
+
+See [tools-reference/13-bug-bounty.md](./tools-reference/13-bug-bounty.md)
+</details>
+
+---
+
+## Cheatsheets
+
+| Tool | File |
+|------|------|
+| Nmap | [cheatsheets/nmap.md](./cheatsheets/nmap.md) |
+| Metasploit | [cheatsheets/metasploit.md](./cheatsheets/metasploit.md) |
+| Hydra | [cheatsheets/hydra.md](./cheatsheets/hydra.md) |
+| SQLmap | [cheatsheets/sqlmap.md](./cheatsheets/sqlmap.md) |
+| Hashcat | [cheatsheets/hashcat.md](./cheatsheets/hashcat.md) |
+| Aircrack-ng | [cheatsheets/aircrack.md](./cheatsheets/aircrack.md) |
+| Burp Suite | [cheatsheets/burpsuite.md](./cheatsheets/burpsuite.md) |
+| hping3 (NEW) | [cheatsheets/hping3.md](./cheatsheets/hping3.md) |
+| dmitry (NEW) | [cheatsheets/dmitry.md](./cheatsheets/dmitry.md) |
 
 ---
 
@@ -197,6 +273,8 @@ See [tools-reference/10-reporting.md](./tools-reference/10-reporting.md)
 | [picoCTF](https://picoctf.org) | CTF challenges | Free |
 | [pwn.college](https://pwn.college) | Binary exploitation | Free |
 | [CyberDefenders](https://cyberdefenders.org) | Blue team/forensics | Free/Paid |
+| [HackerOne](https://hackerone.com) | Real bug bounty | Free |
+| [Bugcrowd](https://bugcrowd.com) | Real bug bounty | Free |
 
 ---
 
@@ -205,8 +283,8 @@ See [tools-reference/10-reporting.md](./tools-reference/10-reporting.md)
 ```
 Month 2  →  CompTIA Security+    (foundations)
 Month 5  →  eJPT                 (entry-level pentest)
-Month 8  →  PNPT                 (practical pentest)
-Month 12 →  OSCP                 (industry gold standard)
+Month 9  →  PNPT                 (practical pentest)
+Month 13 →  OSCP                 (industry gold standard)
 ```
 
 ---
