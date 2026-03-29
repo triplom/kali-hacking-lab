@@ -289,6 +289,17 @@ Month 13 →  OSCP                 (industry gold standard)
 
 ---
 
+## Related Projects
+
+| Project | Relationship |
+|---------|-------------|
+| [python_learning](https://github.com/triplom/python_learning) | **Month 8 — Python for Hacking** directly uses Python scripting skills from this repo: socket programming, Scapy, web automation, wireless tools. Start with Modules 04–07 before Month 8. |
+| [machine-learning-lab](https://github.com/triplom/machine-learning-lab) | **Threat intelligence** — ML anomaly detection (clustering, classification) and NLP log analysis techniques augment vulnerability analysis (Month 3) and sniffing/forensics (Month 9, 11) |
+| [lpic3-study-lab](https://github.com/triplom/lpic3-study-lab) | **Deep security overlap** — LPIC-3 303 Security (cryptography, host security, network security, threat assessment) covers the same tools used here: `openssl`, `nmap`, `iptables`, `wireshark`, `metasploit` |
+| [cka-study-lab](https://github.com/triplom/cka-study-lab) | **Container security** — Kubernetes NetworkPolicy, RBAC, and secrets management (CKA domains) are the defender's view of attack surfaces explored here in Month 7 (Exploitation) and Month 10 (OPSEC) |
+
+---
+
 ## Legal Notice
 
 > All vulnerable containers and exercises in this lab are for **educational purposes only**.  
